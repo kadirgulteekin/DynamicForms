@@ -1,4 +1,5 @@
-﻿using FormService.Infrastructure;
+﻿using FormService.API.Models;
+using FormService.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,34 +17,41 @@ namespace FormService.API.Controllers
             _applicationDbContext = context;
         }
 
-        [HttpGet("form-report")]
-        public async Task<IActionResult> GetFormReport()
+       
+        [HttpPost]
+        public async Task<IActionResult> CreateForm([FromBody] Form form)
         {
-            var formReport = await _applicationDbContext.Forms
-                .Select(f => new
-                {
-                    f.FormName,
-                    f.FormDescription,
-                    DataCount = _applicationDbContext.FormData.Count(d => d.FormId == f.UUID)
-                })
-                .ToListAsync();
-
-            return Ok(formReport);
+            form.UUID = Guid.NewGuid();
+            _applicationDbContext.Forms.Add(form);
+            await _applicationDbContext.SaveChangesAsync();
+            return Ok(form);
         }
 
-        [HttpGet("{id}/data-report")]
-        public async Task<IActionResult> GetFormDataReport(Guid id)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateForm(Guid id, [FromBody] Form updatedForm)
         {
             var form = await _applicationDbContext.Forms.FindAsync(id);
             if (form == null) return NotFound();
 
-            var formData = await _applicationDbContext.FormData
-                .Where(d => d.FormId == id)
-                .ToListAsync();
+            form.IsActive = updatedForm.IsActive;
+            form.FormName = updatedForm.FormName;
+            form.FormDescription = updatedForm.FormDescription;
+            await _applicationDbContext.SaveChangesAsync();
+            return Ok(form);
+        }
 
-            var report = formData.Select(fd => JsonConvert.DeserializeObject<Dictionary<string, string>>(fd.FieldValues!));
+        [HttpPost("{id}/data")]
+        public async Task<IActionResult> AddFormData(Guid id, [FromBody] Dictionary<string, string> fieldValues)
+        {
+            var formData = new FormData
+            {
+                FormId = id,
+                FieldValues = JsonConvert.SerializeObject(fieldValues)
+            };
 
-            return Ok(report);
+            _applicationDbContext.FormData.Add(formData);
+            await _applicationDbContext.SaveChangesAsync();
+            return Ok(formData);
         }
     }
 }
