@@ -1,4 +1,5 @@
-﻿using FormService.Infrastructure;
+﻿using FormService.API.Models;
+using FormService.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,20 +17,41 @@ namespace FormService.API.Controllers
             _applicationDbContext = context;
         }
 
-        [HttpGet("form-report")]
-        public async Task<IActionResult> GetFormReport()
+       
+        [HttpPost]
+        public async Task<IActionResult> CreateForm([FromBody] Form form)
         {
-            var formReport = await _applicationDbContext.Forms
-                .Select(f => new
-                {
-                    f.FormName,
-                    f.FormDescription,
-                    DataCount = _applicationDbContext.FormData.Count(d => d.FormId == f.UUID)
-                })
-                .ToListAsync();
+            form.UUID = Guid.NewGuid();
+            _applicationDbContext.Forms.Add(form);
+            await _applicationDbContext.SaveChangesAsync();
+            return Ok(form);
+        }
 
-            return Ok(formReport);
-            //
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateForm(Guid id, [FromBody] Form updatedForm)
+        {
+            var form = await _applicationDbContext.Forms.FindAsync(id);
+            if (form == null) return NotFound();
+
+            form.IsActive = updatedForm.IsActive;
+            form.FormName = updatedForm.FormName;
+            form.FormDescription = updatedForm.FormDescription;
+            await _applicationDbContext.SaveChangesAsync();
+            return Ok(form);
+        }
+
+        [HttpPost("{id}/data")]
+        public async Task<IActionResult> AddFormData(Guid id, [FromBody] Dictionary<string, string> fieldValues)
+        {
+            var formData = new FormData
+            {
+                FormId = id,
+                FieldValues = JsonConvert.SerializeObject(fieldValues)
+            };
+
+            _applicationDbContext.FormData.Add(formData);
+            await _applicationDbContext.SaveChangesAsync();
+            return Ok(formData);
         }
     }
 }
