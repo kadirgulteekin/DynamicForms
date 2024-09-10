@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormService.API", "FormServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormService.Infrastructure", "FormService\FormService.Infrastructure\FormService.Infrastructure.csproj", "{AE9E219B-6520-4DCD-8E5D-6DD0756D6EB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormService.Domain", "FormService\FormService.Domain\FormService.Domain.csproj", "{E69B9360-655C-4A92-BA1D-07983B5F0B7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormService.Domain", "FormService\FormService.Domain\FormService.Domain.csproj", "{E69B9360-655C-4A92-BA1D-07983B5F0B7B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReportService", "ReportService", "{72E86F73-E050-435F-AD0E-E2911ACFC7BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportService.API", "ReportService\ReportService.API\ReportService.API.csproj", "{8C9112E3-7061-4E6A-B8C7-931B31744FE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +33,10 @@ Global
 		{E69B9360-655C-4A92-BA1D-07983B5F0B7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E69B9360-655C-4A92-BA1D-07983B5F0B7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E69B9360-655C-4A92-BA1D-07983B5F0B7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C9112E3-7061-4E6A-B8C7-931B31744FE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C9112E3-7061-4E6A-B8C7-931B31744FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C9112E3-7061-4E6A-B8C7-931B31744FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C9112E3-7061-4E6A-B8C7-931B31744FE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +45,7 @@ Global
 		{FB04F181-C16E-402F-A7C6-ADEBE5A79AB3} = {DA19F977-EE47-4E7C-9BB6-F95B956D7A62}
 		{AE9E219B-6520-4DCD-8E5D-6DD0756D6EB8} = {DA19F977-EE47-4E7C-9BB6-F95B956D7A62}
 		{E69B9360-655C-4A92-BA1D-07983B5F0B7B} = {DA19F977-EE47-4E7C-9BB6-F95B956D7A62}
+		{8C9112E3-7061-4E6A-B8C7-931B31744FE5} = {72E86F73-E050-435F-AD0E-E2911ACFC7BB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {794C0A66-B17E-47F2-B646-8B701DBB99F9}

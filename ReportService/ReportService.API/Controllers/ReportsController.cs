@@ -9,5 +9,10 @@ namespace ReportService.API.Controllers
     public class ReportsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+
+        public ReportsController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
     }
 }
