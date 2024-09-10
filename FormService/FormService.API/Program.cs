@@ -1,4 +1,4 @@
-using FormService.Infrastructure;
+using FormService.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
