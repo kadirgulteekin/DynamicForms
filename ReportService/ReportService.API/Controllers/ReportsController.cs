@@ -17,6 +17,7 @@ namespace ReportService.API.Controllers
             _context = context;
         }
 
+
         [HttpGet("form-report")]
         public async Task<IActionResult> GetFormReport()
         {
@@ -47,5 +48,6 @@ namespace ReportService.API.Controllers
 
             return Ok(report);
         }
+
     }
 }
