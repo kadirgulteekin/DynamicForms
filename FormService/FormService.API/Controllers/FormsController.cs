@@ -29,7 +29,21 @@ namespace FormService.API.Controllers
                 .ToListAsync();
 
             return Ok(formReport);
-            //
+        }
+
+        [HttpGet("{id}/data-report")]
+        public async Task<IActionResult> GetFormDataReport(Guid id)
+        {
+            var form = await _applicationDbContext.Forms.FindAsync(id);
+            if (form == null) return NotFound();
+
+            var formData = await _applicationDbContext.FormData
+                .Where(d => d.FormId == id)
+                .ToListAsync();
+
+            var report = formData.Select(fd => JsonConvert.DeserializeObject<Dictionary<string, string>>(fd.FieldValues!));
+
+            return Ok(report);
         }
     }
 }
