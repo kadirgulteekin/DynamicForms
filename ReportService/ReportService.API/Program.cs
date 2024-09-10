@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.AddDbContext<ApplicationDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), configure =>
@@ -17,6 +18,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(opt =>
         configure.MigrationsAssembly("FormService.Infrastructure");
     });
 });
+
 
 var app = builder.Build();
 

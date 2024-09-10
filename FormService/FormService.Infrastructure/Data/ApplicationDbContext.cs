@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FormService.Infrastructure
+namespace FormService.Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {
@@ -19,9 +19,17 @@ namespace FormService.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Form>()
+            .HasKey(f => f.UUID);
+
+            modelBuilder.Entity<FormField>()
+            .HasKey(ff => ff.Id);
+
+            modelBuilder.Entity<FormField>()
+                .Property(ff => ff.Id)
+                .ValueGeneratedOnAdd(); 
         }
     }
 
-    
+
 }

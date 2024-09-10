@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
+using System.ComponentModel.DataAnnotations;
 
 namespace FormService.API.Models
 {
     public class Form
     {
+        [Key]
         public Guid UUID { get; set; }
         public string? FormName { get; set; }
         public string? FormDescription { get; set; }
