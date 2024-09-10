@@ -1,6 +1,7 @@
 ﻿using FormService.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FormService.API.Controllers
 {
@@ -9,9 +10,9 @@ namespace FormService.API.Controllers
     public class FormsController : ControllerBase
     {
         private readonly ApplicationDbContext _applicationDbContext;
-        public FormsController()
+        public FormsController(ApplicationDbContext context)
         {
-             
+            _applicationDbContext = context;
         }
     }
 }
