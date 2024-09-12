@@ -1,4 +1,5 @@
 ﻿using FormService.API.Models;
+using FormService.API.Services;
 using FormService.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,45 +13,34 @@ namespace FormService.API.Controllers
     public class FormsController : ControllerBase
     {
         private readonly ApplicationDbContext _applicationDbContext;
-        public FormsController(ApplicationDbContext context)
+        private readonly IFormManageService _formService;
+        public FormsController(ApplicationDbContext context, IFormManageService formService)
         {
             _applicationDbContext = context;
+            _formService = formService;
         }
 
        
         [HttpPost]
         public async Task<IActionResult> CreateForm([FromBody] Form form)
         {
-            form.UUID = Guid.NewGuid();
-            _applicationDbContext.Forms.Add(form);
-            await _applicationDbContext.SaveChangesAsync();
-            return Ok(form);
+            var createdForm = await _formService.CreateForm(form);
+            return Ok(200);       
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateForm(Guid id, [FromBody] Form updatedForm)
         {
-            var form = await _applicationDbContext.Forms.FindAsync(id);
-            if (form == null) return NotFound();
 
-            form.IsActive = updatedForm.IsActive;
-            form.FormName = updatedForm.FormName;
-            form.FormDescription = updatedForm.FormDescription;
-            await _applicationDbContext.SaveChangesAsync();
-            return Ok(form);
+            var updateForm = await _formService.UpdateForm(id, updatedForm);
+            return Ok(updateForm);
         }
 
         [HttpPost("{id}/data")]
         public async Task<IActionResult> AddFormData(Guid id, [FromBody] Dictionary<string, string> fieldValues)
         {
-            var formData = new FormData
-            {
-                FormId = id,
-                FieldValues = JsonConvert.SerializeObject(fieldValues)
-            };
 
-            _applicationDbContext.FormData.Add(formData);
-            await _applicationDbContext.SaveChangesAsync();
+            var formData = await _formService.AddFormData(id, fieldValues);
             return Ok(formData);
         }
     }

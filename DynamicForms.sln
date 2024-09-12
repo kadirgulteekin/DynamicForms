@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormService.API", "FormServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormService.Infrastructure", "FormService\FormService.Infrastructure\FormService.Infrastructure.csproj", "{AE9E219B-6520-4DCD-8E5D-6DD0756D6EB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormService.Domain", "FormService\FormService.Domain\FormService.Domain.csproj", "{E69B9360-655C-4A92-BA1D-07983B5F0B7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormService.Domain", "FormService\FormService.Domain\FormService.Domain.csproj", "{E69B9360-655C-4A92-BA1D-07983B5F0B7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
