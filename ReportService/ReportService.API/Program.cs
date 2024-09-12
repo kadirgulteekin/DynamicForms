@@ -1,5 +1,6 @@
 using FormService.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using ReportService.API.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+ServiceConfigurator.Configure(builder.Services);
 
 builder.Services.AddDbContext<ApplicationDbContext>(opt =>
 {

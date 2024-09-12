@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using ReportService.API.Services;
 
 namespace ReportService.API.Controllers
 {
@@ -11,25 +12,20 @@ namespace ReportService.API.Controllers
     public class ReportsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IFormReportService _reportsService;
 
-        public ReportsController(ApplicationDbContext context)
+        public ReportsController(ApplicationDbContext context, IFormReportService reportsService)
         {
             _context = context;
+            _reportsService = reportsService;
         }
 
 
         [HttpGet("form-report")]
         public async Task<IActionResult> GetFormReport()
         {
-            var formReport = await _context.Forms
-                .Select(f => new
-                {
-                    f.FormName,
-                    f.FormDescription,
-                    DataCount = _context.FormData.Count(d => d.FormId == f.UUID)
-                })
-                .ToListAsync();
 
+            var formReport = await _reportsService.GetFormReportAsync();
             return Ok(formReport);
         }
 
@@ -37,15 +33,7 @@ namespace ReportService.API.Controllers
         [HttpGet("{id}/data-report")]
         public async Task<IActionResult> GetFormDataReport(Guid id)
         {
-            var form = await _context.Forms.FindAsync(id);
-            if (form == null) return NotFound();
-
-            var formData = await _context.FormData
-                .Where(d => d.FormId == id)
-                .ToListAsync();
-
-            var report = formData.Select(fd => JsonConvert.DeserializeObject<Dictionary<string, string>>(fd.FieldValues!));
-
+            var report  = await _reportsService.GetFormDataReport(id);
             return Ok(report);
         }
 
