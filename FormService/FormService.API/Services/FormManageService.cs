@@ -1,5 +1,6 @@
 ﻿using FormService.API.Models;
 using FormService.Infrastructure;
+using FormService.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -24,7 +25,7 @@ namespace FormService.API.Services
 
             _applicationDbContext.FormData.Add(formData);
             await _applicationDbContext.SaveChangesAsync();
-            return (IActionResult)formData;
+            return FormService.Domain.Helper.ResponseHelper.CreateOkResponse(formData);
         }
 
         public async Task<IActionResult> CreateForm([FromBody] Form form)
@@ -32,7 +33,7 @@ namespace FormService.API.Services
             form.UUID = Guid.NewGuid();
             _applicationDbContext.Forms.Add(form);
             await _applicationDbContext.SaveChangesAsync();
-            return (IActionResult)form;
+            return FormService.Domain.Helper.ResponseHelper.CreateOkResponse(form);
         }
 
         public async Task<IActionResult> UpdateForm(Guid id, [FromBody] Form updatedForm)
@@ -44,7 +45,7 @@ namespace FormService.API.Services
             form.FormName = updatedForm.FormName;
             form.FormDescription = updatedForm.FormDescription;
             await _applicationDbContext.SaveChangesAsync();
-            return (IActionResult)form;
+            return FormService.Domain.Helper.ResponseHelper.CreateOkResponse(form);
         }
     }
 }

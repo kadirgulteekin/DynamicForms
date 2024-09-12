@@ -1,6 +1,6 @@
 ﻿using FormService.API.Models;
 using FormService.API.Services;
-using FormService.Infrastructure;
+using FormService.Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,34 +13,34 @@ namespace FormService.API.Controllers
     public class FormsController : ControllerBase
     {
         private readonly ApplicationDbContext _applicationDbContext;
-        private readonly IFormManageService _formService;
-        public FormsController(ApplicationDbContext context, IFormManageService formService)
+        private readonly IFormManageService _formManageService;
+        public FormsController(ApplicationDbContext context, IFormManageService formManageService)
         {
             _applicationDbContext = context;
-            _formService = formService;
+            _formManageService = formManageService;
         }
 
        
         [HttpPost]
         public async Task<IActionResult> CreateForm([FromBody] Form form)
         {
-            var createdForm = await _formService.CreateForm(form);
-            return Ok(200);       
+            var createdForm = await _formManageService.CreateForm(form);
+
+            return Ok(createdForm);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateForm(Guid id, [FromBody] Form updatedForm)
         {
+            var form = await _formManageService.UpdateForm(id, updatedForm);
 
-            var updateForm = await _formService.UpdateForm(id, updatedForm);
-            return Ok(updateForm);
+            return Ok(form);
         }
 
         [HttpPost("{id}/data")]
         public async Task<IActionResult> AddFormData(Guid id, [FromBody] Dictionary<string, string> fieldValues)
         {
-
-            var formData = await _formService.AddFormData(id, fieldValues);
+            var formData = await _formManageService.AddFormData(id, fieldValues);
             return Ok(formData);
         }
     }
